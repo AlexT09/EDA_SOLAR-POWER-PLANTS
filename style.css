@@ -1,0 +1,26 @@
+h1, h2, h3, h4 {
+  color: #003087;
+}
+
+.book .book-body .page-inner {
+  max-width: 920px;
+}
+
+code {
+  background-color: #f0f4f8;
+  color: #003087;
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+
+pre.sourceCode {
+  background-color: #f8fafc;
+  border-left: 4px solid #003087;
+}
+
+a { color: #0070CC; }
+a:hover { color: #003087; text-decoration: underline; }
+
+.book .book-summary ul.summary li a {
+  color: #003087;
+}

@@ -1,0 +1,10 @@
+book_filename: "rbook_dataviz"
+language:
+  ui:
+    chapter_name: "Capítulo "
+
+rmd_files:
+  - "index.Rmd"
+  - "01-eda.Rmd"
+
+output_dir: "docs"
