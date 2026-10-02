@@ -31,6 +31,20 @@ NOT_USED = ["area", "size", "dt_wind", "operational_status"]
 IDENTIFIERS = ["OBJECTID", "code", "plant_name"]
 DESCRIPTIVE = ["country"]
 
+# Rótulo con unidades de cada predictora, para los ejes de los gráficos.
+AXIS_LABELS = {
+    "latitude": "Latitud (°)",
+    "longitude": "Longitud (°)",
+    "elevation": "Elevación (m s. n. m.)",
+    "dist_to_road": "Distancia a la vía (m)",
+    "ambient_temperature": "Temperatura media anual (°C)",
+    "ghi": "Irradiación global (kWh/m²/día)",
+    "humidity": "Humedad relativa (%)",
+    "wind_speed": "Velocidad del viento (m/s)",
+    "wind_direction": "Dirección del viento (°)",
+    "optimal_tilt": "Inclinación óptima (°)",
+}
+
 # Colores fijos por clase (paleta categórica validada para daltonismo):
 # el color sigue a la clase en todos los capítulos.
 CLASS_COLORS = {"Alta": "#2a78d6", "Baja": "#eb6834", "Media": "#1baf7a"}
