@@ -1,0 +1,801 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6. Análisis bivariado con la variable objetivo &#8212; EDA · Aptitud solar fotovoltaica</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Haz clic para mostrar';</script>
+    <script>let toggleHintHide = 'Haz clic para ocultar';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '06_bivariado';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="7. Correlación y multicolinealidad" href="07_correlacion.html" />
+    <link rel="prev" title="5. Distribución geográfica" href="05_geografico.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">EDA · Aptitud solar fotovoltaica</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Búsqueda</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Análisis exploratorio de datos: aptitud solar fotovoltaica
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Análisis exploratorio de datos</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_carga_estructura.html">1. Carga y estructura del dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_calidad_datos.html">2. Calidad de datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_variable_objetivo.html">3. Variable objetivo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_univariado.html">4. Análisis univariado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_geografico.html">5. Distribución geográfica</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Análisis bivariado con la variable objetivo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_correlacion.html">7. Correlación y multicolinealidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_fuga_seleccion.html">8. Fuga de datos y selección de variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_conclusiones.html">9. Conclusiones del EDA</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/AlexT09/EDA_SOLAR-POWER-PLANTS" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Repositorio de origen"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/06_bivariado.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="claro/oscuro" aria-label="claro/oscuro" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>6. Análisis bivariado con la variable objetivo</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictoras-numericas">6.1 Predictoras numéricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictoras-categoricas">6.2 Predictoras categóricas</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="analisis-bivariado-con-la-variable-objetivo">
+<h1>6. Análisis bivariado con la variable objetivo<a class="headerlink" href="#analisis-bivariado-con-la-variable-objetivo" title="Link to this heading">#</a></h1>
+<p>Se mide cuánto separa cada predictora las tres clases de aptitud.</p>
+<ul class="simple">
+<li><p><strong>Numéricas:</strong> prueba de Kruskal-Wallis, no paramétrica porque varias variables son muy asimétricas, con tamaño del efecto <strong>ε²</strong> (0.01 pequeño, 0.06 mediano, 0.14 grande).</p></li>
+<li><p><strong>Categóricas:</strong> prueba <strong>χ²</strong> con <strong>V de Cramér</strong> (0.1 débil, 0.3 moderada, 0.5 fuerte).</p></li>
+</ul>
+<p>Con 58 978 observaciones casi cualquier diferencia es «significativa», así que la lectura se basa en el <strong>tamaño del efecto</strong>, no en el p-valor.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">set_style</span><span class="p">()</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="predictoras-numericas">
+<h2>6.1 Predictoras numéricas<a class="headerlink" href="#predictoras-numericas" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">c</span><span class="p">:</span> <span class="n">kruskal_by_class</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">NUMERIC</span><span class="p">})</span><span class="o">.</span><span class="n">T</span>
+<span class="n">med</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">TARGET</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="n">NUMERIC</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="s2">&quot;mediana_&quot;</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">res</span><span class="p">,</span> <span class="n">med</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;epsilon2&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">res</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;p_valor&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.1e}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;epsilon2&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mediana_&quot;</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+</style>
+<table id="T_c9dce">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_c9dce_level0_col0" class="col_heading level0 col0" >H</th>
+      <th id="T_c9dce_level0_col1" class="col_heading level0 col1" >p_valor</th>
+      <th id="T_c9dce_level0_col2" class="col_heading level0 col2" >epsilon2</th>
+      <th id="T_c9dce_level0_col3" class="col_heading level0 col3" >mediana_Baja</th>
+      <th id="T_c9dce_level0_col4" class="col_heading level0 col4" >mediana_Media</th>
+      <th id="T_c9dce_level0_col5" class="col_heading level0 col5" >mediana_Alta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_c9dce_level0_row0" class="row_heading level0 row0" >longitude</th>
+      <td id="T_c9dce_row0_col0" class="data row0 col0" >12,891</td>
+      <td id="T_c9dce_row0_col1" class="data row0 col1" >0.0e+00</td>
+      <td id="T_c9dce_row0_col2" class="data row0 col2" >0.219</td>
+      <td id="T_c9dce_row0_col3" class="data row0 col3" >13.61</td>
+      <td id="T_c9dce_row0_col4" class="data row0 col4" >-2.97</td>
+      <td id="T_c9dce_row0_col5" class="data row0 col5" >101.08</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row1" class="row_heading level0 row1" >slope</th>
+      <td id="T_c9dce_row1_col0" class="data row1 col0" >3,713</td>
+      <td id="T_c9dce_row1_col1" class="data row1 col1" >0.0e+00</td>
+      <td id="T_c9dce_row1_col2" class="data row1 col2" >0.063</td>
+      <td id="T_c9dce_row1_col3" class="data row1 col3" >4.57</td>
+      <td id="T_c9dce_row1_col4" class="data row1 col4" >0.65</td>
+      <td id="T_c9dce_row1_col5" class="data row1 col5" >0.64</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row2" class="row_heading level0 row2" >dist_to_road</th>
+      <td id="T_c9dce_row2_col0" class="data row2 col0" >2,605</td>
+      <td id="T_c9dce_row2_col1" class="data row2 col1" >0.0e+00</td>
+      <td id="T_c9dce_row2_col2" class="data row2 col2" >0.044</td>
+      <td id="T_c9dce_row2_col3" class="data row2 col3" >3133.53</td>
+      <td id="T_c9dce_row2_col4" class="data row2 col4" >900.06</td>
+      <td id="T_c9dce_row2_col5" class="data row2 col5" >606.72</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row3" class="row_heading level0 row3" >latitude</th>
+      <td id="T_c9dce_row3_col0" class="data row3 col0" >2,176</td>
+      <td id="T_c9dce_row3_col1" class="data row3 col1" >0.0e+00</td>
+      <td id="T_c9dce_row3_col2" class="data row3 col2" >0.037</td>
+      <td id="T_c9dce_row3_col3" class="data row3 col3" >41.09</td>
+      <td id="T_c9dce_row3_col4" class="data row3 col4" >41.53</td>
+      <td id="T_c9dce_row3_col5" class="data row3 col5" >36.12</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row4" class="row_heading level0 row4" >elevation</th>
+      <td id="T_c9dce_row4_col0" class="data row4 col0" >1,396</td>
+      <td id="T_c9dce_row4_col1" class="data row4 col1" >8.7e-304</td>
+      <td id="T_c9dce_row4_col2" class="data row4 col2" >0.024</td>
+      <td id="T_c9dce_row4_col3" class="data row4 col3" >415.50</td>
+      <td id="T_c9dce_row4_col4" class="data row4 col4" >207.00</td>
+      <td id="T_c9dce_row4_col5" class="data row4 col5" >132.00</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row5" class="row_heading level0 row5" >wind_speed</th>
+      <td id="T_c9dce_row5_col0" class="data row5 col0" >1,333</td>
+      <td id="T_c9dce_row5_col1" class="data row5 col1" >3.7e-290</td>
+      <td id="T_c9dce_row5_col2" class="data row5 col2" >0.023</td>
+      <td id="T_c9dce_row5_col3" class="data row5 col3" >0.56</td>
+      <td id="T_c9dce_row5_col4" class="data row5 col4" >0.93</td>
+      <td id="T_c9dce_row5_col5" class="data row5 col5" >0.75</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row6" class="row_heading level0 row6" >ambient_temperature</th>
+      <td id="T_c9dce_row6_col0" class="data row6 col0" >785</td>
+      <td id="T_c9dce_row6_col1" class="data row6 col1" >3.1e-171</td>
+      <td id="T_c9dce_row6_col2" class="data row6 col2" >0.013</td>
+      <td id="T_c9dce_row6_col3" class="data row6 col3" >12.50</td>
+      <td id="T_c9dce_row6_col4" class="data row6 col4" >11.75</td>
+      <td id="T_c9dce_row6_col5" class="data row6 col5" >14.12</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row7" class="row_heading level0 row7" >area</th>
+      <td id="T_c9dce_row7_col0" class="data row7 col0" >341</td>
+      <td id="T_c9dce_row7_col1" class="data row7 col1" >8.7e-75</td>
+      <td id="T_c9dce_row7_col2" class="data row7 col2" >0.008</td>
+      <td id="T_c9dce_row7_col3" class="data row7 col3" >2645.21</td>
+      <td id="T_c9dce_row7_col4" class="data row7 col4" >14302.10</td>
+      <td id="T_c9dce_row7_col5" class="data row7 col5" >7709.43</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row8" class="row_heading level0 row8" >wind_direction</th>
+      <td id="T_c9dce_row8_col0" class="data row8 col0" >445</td>
+      <td id="T_c9dce_row8_col1" class="data row8 col1" >1.8e-97</td>
+      <td id="T_c9dce_row8_col2" class="data row8 col2" >0.008</td>
+      <td id="T_c9dce_row8_col3" class="data row8 col3" >200.11</td>
+      <td id="T_c9dce_row8_col4" class="data row8 col4" >230.59</td>
+      <td id="T_c9dce_row8_col5" class="data row8 col5" >209.98</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row9" class="row_heading level0 row9" >ghi</th>
+      <td id="T_c9dce_row9_col0" class="data row9 col0" >167</td>
+      <td id="T_c9dce_row9_col1" class="data row9 col1" >5.8e-37</td>
+      <td id="T_c9dce_row9_col2" class="data row9 col2" >0.003</td>
+      <td id="T_c9dce_row9_col3" class="data row9 col3" >4.98</td>
+      <td id="T_c9dce_row9_col4" class="data row9 col4" >4.25</td>
+      <td id="T_c9dce_row9_col5" class="data row9 col5" >4.48</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row10" class="row_heading level0 row10" >humidity</th>
+      <td id="T_c9dce_row10_col0" class="data row10 col0" >112</td>
+      <td id="T_c9dce_row10_col1" class="data row10 col1" >4.0e-25</td>
+      <td id="T_c9dce_row10_col2" class="data row10 col2" >0.002</td>
+      <td id="T_c9dce_row10_col3" class="data row10 col3" >68.33</td>
+      <td id="T_c9dce_row10_col4" class="data row10 col4" >68.33</td>
+      <td id="T_c9dce_row10_col5" class="data row10 col5" >70.64</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row11" class="row_heading level0 row11" >aspect</th>
+      <td id="T_c9dce_row11_col0" class="data row11 col0" >22</td>
+      <td id="T_c9dce_row11_col1" class="data row11 col1" >1.4e-05</td>
+      <td id="T_c9dce_row11_col2" class="data row11 col2" >0.000</td>
+      <td id="T_c9dce_row11_col3" class="data row11 col3" >175.12</td>
+      <td id="T_c9dce_row11_col4" class="data row11 col4" >175.60</td>
+      <td id="T_c9dce_row11_col5" class="data row11 col5" >168.93</td>
+    </tr>
+    <tr>
+      <th id="T_c9dce_level0_row12" class="row_heading level0 row12" >curvature</th>
+      <td id="T_c9dce_row12_col0" class="data row12 col0" >20</td>
+      <td id="T_c9dce_row12_col1" class="data row12 col1" >5.7e-05</td>
+      <td id="T_c9dce_row12_col2" class="data row12 col2" >0.000</td>
+      <td id="T_c9dce_row12_col3" class="data row12 col3" >0.00</td>
+      <td id="T_c9dce_row12_col4" class="data row12 col4" >0.00</td>
+      <td id="T_c9dce_row12_col5" class="data row12 col5" >0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">))</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;epsilon2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">CLASS_COLORS</span><span class="p">[</span><span class="s2">&quot;Alta&quot;</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">v</span> <span class="o">+</span> <span class="mf">0.003</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">8.5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">lab</span> <span class="ow">in</span> <span class="p">[(</span><span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;pequeño&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.06</span><span class="p">,</span> <span class="s2">&quot;mediano&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.14</span><span class="p">,</span> <span class="s2">&quot;grande&quot;</span><span class="p">)]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">NEUTRAL</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">lab</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">NEUTRAL</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.6</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Tamaño del efecto ε² (Kruskal-Wallis)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Poder de separación de cada predictora numérica&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c1d3a303f7f055d70c0698b3796ced9cd270cb153f5fecbe6daa923627bb1b5c.png" src="_images/c1d3a303f7f055d70c0698b3796ced9cd270cb153f5fecbe6daa923627bb1b5c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;slope&quot;</span><span class="p">,</span> <span class="s2">&quot;dist_to_road&quot;</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;elevation&quot;</span><span class="p">,</span> <span class="s2">&quot;wind_speed&quot;</span><span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">top_vars</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">col</span><span class="p">,</span> <span class="n">TARGET</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dist_to_road&quot;</span><span class="p">,</span> <span class="s2">&quot;slope&quot;</span><span class="p">,</span> <span class="s2">&quot;elevation&quot;</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;log10(</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> + 1)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">TARGET</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">CLASS_ORDER</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">TARGET</span><span class="p">,</span>
+                   <span class="n">palette</span><span class="o">=</span><span class="n">CLASS_COLORS</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">inner</span><span class="o">=</span><span class="s2">&quot;quartile&quot;</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                   <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">cut</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Distribución por clase de las seis predictoras con mayor efecto&quot;</span><span class="p">,</span>
+             <span class="n">x</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/58e6428f57e42df7c3392d3fe007f353f8150ac88dcf8373b7aa6127be41f853.png" src="_images/58e6428f57e42df7c3392d3fe007f353f8150ac88dcf8373b7aa6127be41f853.png" />
+</div>
+</div>
+<p><strong>Lectura</strong></p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">longitude</span></code> (ε² = 0.219, efecto grande)</strong> es por lejos la más discriminante. La mediana es 101° en Alta (Asia oriental), 13.6° en Baja (Europa) y −3.0° en Media (mezcla de Europa y EE. UU.). Confirma lo visto en el capítulo 5: separa regiones más que condiciones físicas.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">slope</span></code> (ε² = 0.063, efecto mediano)</strong> es la variable física más relevante. La mediana de las plantas Baja es 4.6°, unas siete veces la de Media y Alta (≈ 0.64°). Una pendiente pronunciada se asocia con baja aptitud.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">dist_to_road</span></code> (0.044)</strong> y <strong><code class="docutils literal notranslate"><span class="pre">elevation</span></code> (0.024)</strong>: las plantas Baja están más lejos de las vías (mediana de 3.1 km frente a 0.6 km en Alta) y más altas (416 m frente a 132 m). Es el perfil de terreno montañoso y remoto.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">latitude</span></code> (0.037)</strong> y <strong><code class="docutils literal notranslate"><span class="pre">wind_speed</span></code> (0.023)</strong> tienen efectos pequeños.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">curvature</span></code>, <code class="docutils literal notranslate"><span class="pre">aspect</span></code>, <code class="docutils literal notranslate"><span class="pre">humidity</span></code>, <code class="docutils literal notranslate"><span class="pre">ghi</span></code>, <code class="docutils literal notranslate"><span class="pre">area</span></code> y <code class="docutils literal notranslate"><span class="pre">wind_direction</span></code></strong> tienen efecto prácticamente nulo (ε² &lt; 0.01) por sí solas. Pueden aportar en interacción con otras variables, lo que favorece modelos no lineales (árboles y ensambles).</p></li>
+</ul>
+</section>
+<section id="predictoras-categoricas">
+<h2>6.2 Predictoras categóricas<a class="headerlink" href="#predictoras-categoricas" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">c</span><span class="p">:</span> <span class="n">cramers_v</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">TARGET</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CATEGORICAL</span><span class="p">})</span><span class="o">.</span><span class="n">T</span>
+<span class="n">cv</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;V&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;chi2&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;p_valor&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.1e}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+</style>
+<table id="T_13267">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_13267_level0_col0" class="col_heading level0 col0" >chi2</th>
+      <th id="T_13267_level0_col1" class="col_heading level0 col1" >p_valor</th>
+      <th id="T_13267_level0_col2" class="col_heading level0 col2" >V</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_13267_level0_row0" class="row_heading level0 row0" >slope_type</th>
+      <td id="T_13267_row0_col0" class="data row0 col0" >7,853</td>
+      <td id="T_13267_row0_col1" class="data row0 col1" >0.0e+00</td>
+      <td id="T_13267_row0_col2" class="data row0 col2" >0.258</td>
+    </tr>
+    <tr>
+      <th id="T_13267_level0_row1" class="row_heading level0 row1" >curvature_type</th>
+      <td id="T_13267_row1_col0" class="data row1 col0" >2,458</td>
+      <td id="T_13267_row1_col1" class="data row1 col1" >0.0e+00</td>
+      <td id="T_13267_row1_col2" class="data row1 col2" >0.144</td>
+    </tr>
+    <tr>
+      <th id="T_13267_level0_row2" class="row_heading level0 row2" >dt_wind</th>
+      <td id="T_13267_row2_col0" class="data row2 col0" >1,089</td>
+      <td id="T_13267_row2_col1" class="data row2 col1" >9.7e-224</td>
+      <td id="T_13267_row2_col2" class="data row2 col2" >0.096</td>
+    </tr>
+    <tr>
+      <th id="T_13267_level0_row3" class="row_heading level0 row3" >aspect_type</th>
+      <td id="T_13267_row3_col0" class="data row3 col0" >562</td>
+      <td id="T_13267_row3_col1" class="data row3 col1" >2.2e-109</td>
+      <td id="T_13267_row3_col2" class="data row3 col2" >0.069</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">CATEGORICAL</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">TARGET</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)[</span><span class="n">CLASS_ORDER</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;Baja&quot;</span><span class="p">)</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CLASS_ORDER</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">left</span><span class="o">=</span><span class="n">left</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">CLASS_COLORS</span><span class="p">[</span><span class="n">c</span><span class="p">],</span>
+                <span class="n">label</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">SURFACE</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+        <span class="n">left</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">  (V = </span><span class="si">{</span><span class="n">cv</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">col</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;V&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.08</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Composición de la aptitud dentro de cada categoría (%)&quot;</span><span class="p">,</span>
+             <span class="n">x</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5f9c0d1dff83700cfdae203ee90d7c705c780c3ceea38ef9dda12a612af59969.png" src="_images/5f9c0d1dff83700cfdae203ee90d7c705c780c3ceea38ef9dda12a612af59969.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">slope_type</span></code> (V = 0.258, asociación moderada)</strong> es la categórica más informativa. En terreno <em>plano o casi plano</em> solo el 0.1 % de las plantas es Baja; en terreno <em>moderado</em> lo es el 22.1 % y en <em>fuerte</em> el 19.2 %. Es coherente con <code class="docutils literal notranslate"><span class="pre">slope</span></code>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">curvature_type</span></code> (V = 0.144)</strong>: las superficies convexas (crestas) y cóncavas (valles) tienen entre 6 y 8 veces más plantas Baja que las planas (11.6 % y 9.7 % frente a 1.5 %). Aunque <code class="docutils literal notranslate"><span class="pre">curvature</span></code> numérica no separa las clases, <strong>su versión categórica sí</strong>. Esto sugiere que importa la magnitud de la curvatura y no su signo, por lo que vale la pena probar <code class="docutils literal notranslate"><span class="pre">abs(curvature)</span></code>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">dt_wind</span></code> (0.096)</strong> y <strong><code class="docutils literal notranslate"><span class="pre">aspect_type</span></code> (0.069)</strong> tienen una asociación débil.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05_geografico.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title">5. Distribución geográfica</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="07_correlacion.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title">7. Correlación y multicolinealidad</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictoras-numericas">6.1 Predictoras numéricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictoras-categoricas">6.2 Predictoras categóricas</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Jesús David Arévalo Montilla, Enmanuel David Díaz Molinares y Alex David Terán Meza
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  Programa de Ciencia de Datos · Universidad del Norte
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
