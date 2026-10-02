@@ -14,7 +14,7 @@
 - **Duplicados:** eliminarlos antes de partir los datos.
 - **Partición:** 80/20 estratificada y validación cruzada estratificada de 5 pliegues.
 - **Ceros inconsistentes:** pasarlos a nulos e imputarlos con la mediana.
-- **Extremos:** logaritmo en `dist_to_road` y recorte en el percentil 99.
+- **Extremos:** logaritmo en `dist_to_road`.
 - **Codificación:** seno y coseno para `wind_direction`.
 - **Colinealidad:** en la regresión logística, probar sin `optimal_tilt` o con regularización.
 - **Escalado:** `StandardScaler` para los modelos sensibles a la escala.
