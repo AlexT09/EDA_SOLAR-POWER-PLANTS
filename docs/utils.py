@@ -83,8 +83,8 @@ def variable_roles():
         [(v, "Objetivo") for v in [TARGET]]
         + [(v, "Predictora") for v in NUMERIC]
         + [(v, "Excluida por fuga de datos") for v in EXCLUDED_LEAKAGE]
-        + [(v, "Excluida (no disponible a priori / otro problema)") for v in EXCLUDED_OTHER]
-        + [(v, "No usada en la segunda entrega") for v in NOT_USED]
+        + [(v, "Excluida") for v in EXCLUDED_OTHER]
+        + [(v, "Excluida") for v in NOT_USED]
         + [(v, "Identificador") for v in IDENTIFIERS]
         + [(v, "Descriptiva (no predictora)") for v in DESCRIPTIVE]
     )
