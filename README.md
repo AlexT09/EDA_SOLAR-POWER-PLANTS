@@ -2,7 +2,6 @@
 
 Análisis exploratorio de datos del proyecto **Clasificación de la aptitud solar fotovoltaica a partir de variables geoespaciales y climáticas** (Programa de Ciencia de Datos, Universidad del Norte).
 
-📖 **Libro publicado:** https://alext09.github.io/EDA_SOLAR-POWER-PLANTS/
 
 ## Estructura
 
@@ -22,13 +21,3 @@ docs/
 ├── utils.py                    # funciones compartidas (carga, estilo, pruebas)
 └── data/Dataset_Mundial_Final.csv
 ```
-
-## Compilar y publicar
-
-```bash
-pip install -r requirements.txt
-jupyter-book build docs
-ghp-import -n -p -f docs/_build/html
-```
-
-GitHub Pages: **Settings → Pages → Deploy from a branch → gh-pages / (root)**.
