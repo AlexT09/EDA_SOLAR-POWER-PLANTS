@@ -35,5 +35,3 @@ jupyter-book build docs
 # 3. Publicar en GitHub Pages (rama gh-pages)
 ghp-import -n -p -f docs/_build/html
 ```
-
-El sitio se actualiza en 1–2 minutos: https://alext09.github.io/EDA_SOLAR-POWER-PLANTS/intro.html
