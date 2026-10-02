@@ -6,7 +6,6 @@ estilo de los gráficos y las pruebas estadísticas usadas en varios capítulos.
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 from scipy import stats
 
@@ -16,18 +15,21 @@ DATA_PATH = Path(__file__).resolve().parent / "data" / "Dataset_Mundial_Final.cs
 TARGET = "solar_aptittude_class"
 CLASS_ORDER = ["Baja", "Media", "Alta"]
 
+# Las 10 predictoras de la segunda entrega (todas numéricas).
 NUMERIC = [
-    "longitude", "latitude", "elevation", "area", "slope", "curvature",
-    "aspect", "dist_to_road", "ambient_temperature", "ghi", "humidity",
-    "wind_speed", "wind_direction",
+    "latitude", "longitude", "elevation", "dist_to_road", "ambient_temperature",
+    "ghi", "humidity", "wind_speed", "wind_direction", "optimal_tilt",
 ]
-CATEGORICAL = ["slope_type", "curvature_type", "aspect_type", "dt_wind"]
+# slope, aspect y curvature entran en la fórmula del índice de aptitud;
+# sus versiones categóricas (*_type) son la misma información discretizada.
 EXCLUDED_LEAKAGE = [
-    "solar_aptitude", "solar_aptitude_rounded", "capacity", "optimal_tilt",
-    "pv_potential", "operational_status",
+    "slope", "aspect", "curvature", "slope_type", "aspect_type",
+    "curvature_type", "solar_aptitude", "solar_aptitude_rounded",
 ]
+EXCLUDED_OTHER = ["capacity", "pv_potential"]
+NOT_USED = ["area", "size", "dt_wind", "operational_status"]
 IDENTIFIERS = ["OBJECTID", "code", "plant_name"]
-OTHER = ["country", "size"]
+DESCRIPTIVE = ["country"]
 
 # Colores fijos por clase (paleta categórica validada para daltonismo):
 # el color sigue a la clase en todos los capítulos.
@@ -65,11 +67,12 @@ def variable_roles():
     """
     rows = (
         [(v, "Objetivo") for v in [TARGET]]
-        + [(v, "Predictora numérica") for v in NUMERIC]
-        + [(v, "Predictora categórica") for v in CATEGORICAL]
-        + [(v, "Excluida (fuga / posterior a la decisión)") for v in EXCLUDED_LEAKAGE]
+        + [(v, "Predictora") for v in NUMERIC]
+        + [(v, "Excluida por fuga de datos") for v in EXCLUDED_LEAKAGE]
+        + [(v, "Excluida (no disponible a priori / otro problema)") for v in EXCLUDED_OTHER]
+        + [(v, "No usada en la segunda entrega") for v in NOT_USED]
         + [(v, "Identificador") for v in IDENTIFIERS]
-        + [(v, "Descriptiva (no predictora)") for v in OTHER]
+        + [(v, "Descriptiva (no predictora)") for v in DESCRIPTIVE]
     )
     return pd.DataFrame(rows, columns=["variable", "rol"])
 
@@ -99,25 +102,6 @@ def set_style():
     })
 
 
-def iqr_outliers(series):
-    """Proporción de valores atípicos según la regla de 1.5 × IQR.
-
-    Parameters
-    ----------
-    series : pandas.Series
-        Variable numérica (los nulos se ignoran).
-
-    Returns
-    -------
-    float
-        Porcentaje de observaciones fuera de ``[Q1 - 1.5·IQR, Q3 + 1.5·IQR]``.
-    """
-    s = series.dropna()
-    q1, q3 = s.quantile([0.25, 0.75])
-    iqr = q3 - q1
-    return 100 * ((s < q1 - 1.5 * iqr) | (s > q3 + 1.5 * iqr)).mean()
-
-
 def kruskal_by_class(df, col, target=TARGET):
     """Prueba de Kruskal-Wallis de una variable numérica entre clases.
 
@@ -139,23 +123,3 @@ def kruskal_by_class(df, col, target=TARGET):
     h, p = stats.kruskal(*groups)
     n = sum(len(g) for g in groups)
     return {"H": h, "p_valor": p, "epsilon2": h / ((n ** 2 - 1) / (n + 1))}
-
-
-def cramers_v(x, y):
-    """V de Cramér entre dos variables categóricas, con su prueba chi².
-
-    Parameters
-    ----------
-    x, y : pandas.Series
-
-    Returns
-    -------
-    dict
-        Estadístico chi², p-valor y V de Cramér (0.1 débil, 0.3 moderada,
-        0.5 fuerte).
-    """
-    table = pd.crosstab(x, y)
-    chi2, p, _, _ = stats.chi2_contingency(table)
-    n = table.to_numpy().sum()
-    k = min(table.shape) - 1
-    return {"chi2": chi2, "p_valor": p, "V": np.sqrt(chi2 / (n * k))}
