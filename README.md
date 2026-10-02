@@ -13,7 +13,7 @@ docs/
 ├── 04_univariado.ipynb         # variable objetivo y distribuciones de las 10 predictoras
 ├── 05_geografico.ipynb         # mapa y composición por país
 ├── 06_bivariado.ipynb          # predictoras frente a la clase y correlación entre ellas
-├── 07_conclusiones.md          # hallazgos y decisiones de preprocesamiento
-├── utils.py                    # funciones compartidas (carga, estilo, pruebas)
+├── 07_conclusiones.md          # hallazgos para preprocesamiento
+├── utils.py                    # funciones compartidas 
 └── data/Dataset_Mundial_Final.csv
 ```
