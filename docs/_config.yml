@@ -1,0 +1,32 @@
+title: "EDA · Aptitud solar fotovoltaica"
+author: "Jesús David Arévalo Montilla, Enmanuel David Díaz Molinares y Alex David Terán Meza"
+copyright: "2026"
+only_build_toc_files: true
+
+execute:
+  execute_notebooks: force
+  timeout: 900
+  stderr_output: remove
+
+repository:
+  url: https://github.com/AlexT09/EDA_SOLAR-POWER-PLANTS
+  path_to_book: docs
+  branch: main
+
+html:
+  use_repository_button: true
+  use_issues_button: false
+  home_page_in_navbar: true
+  extra_footer: "Programa de Ciencia de Datos · Universidad del Norte"
+
+sphinx:
+  config:
+    language: es
+    html_show_copyright: false
+    html_js_files:
+      - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
+
+parse:
+  myst_enable_extensions:
+    - colon_fence
+    - dollarmath

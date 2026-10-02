@@ -1,13 +1,34 @@
-Welcome! 
+# EDA · Aptitud solar fotovoltaica
 
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). 
+Análisis exploratorio de datos del proyecto **Clasificación de la aptitud solar fotovoltaica a partir de variables geoespaciales y climáticas** (Programa de Ciencia de Datos, Universidad del Norte).
 
-This template provides a skeleton file structure that you can edit to create your book. 
+📖 **Libro publicado:** https://alext09.github.io/EDA_SOLAR-POWER-PLANTS/
 
-The contents inside the .Rmd files provide some pointers to help you get started, but feel free to also delete the content in each file and start fresh.
+## Estructura
 
-Additional resources:
+```
+docs/
+├── _config.yml, _toc.yml       # configuración del Jupyter Book
+├── intro.md                    # presentación del problema
+├── 01_carga_estructura.ipynb   # dimensiones, tipos y roles de variables
+├── 02_calidad_datos.ipynb      # nulos, duplicados, extremos, categorías
+├── 03_variable_objetivo.ipynb  # desbalance de solar_aptittude_class
+├── 04_univariado.ipynb         # distribuciones de las 17 predictoras
+├── 05_geografico.ipynb         # mapa y composición por país
+├── 06_bivariado.ipynb          # Kruskal-Wallis / chi² frente a la clase
+├── 07_correlacion.ipynb        # Spearman y VIF
+├── 08_fuga_seleccion.ipynb     # variables excluidas y predictoras finales
+├── 09_conclusiones.md          # hallazgos y decisiones de preprocesamiento
+├── utils.py                    # funciones compartidas (carga, estilo, pruebas)
+└── data/Dataset_Mundial_Final.csv
+```
 
-The **bookdown** book: https://bookdown.org/yihui/bookdown/
+## Compilar y publicar
 
-The **bookdown** package reference site: https://pkgs.rstudio.com/bookdown
+```bash
+pip install -r requirements.txt
+jupyter-book build docs
+ghp-import -n -p -f docs/_build/html
+```
+
+GitHub Pages: **Settings → Pages → Deploy from a branch → gh-pages / (root)**.

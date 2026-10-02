@@ -1,0 +1,14 @@
+format: jb-book
+root: intro
+parts:
+  - caption: Análisis exploratorio de datos
+    chapters:
+      - file: 01_carga_estructura
+      - file: 02_calidad_datos
+      - file: 03_variable_objetivo
+      - file: 04_univariado
+      - file: 05_geografico
+      - file: 06_bivariado
+      - file: 07_correlacion
+      - file: 08_fuga_seleccion
+      - file: 09_conclusiones
