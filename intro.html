@@ -180,13 +180,10 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01_carga_estructura.html">1. Carga y estructura del dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_calidad_datos.html">2. Calidad de datos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_variable_objetivo.html">3. Variable objetivo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_univariado.html">4. Análisis univariado</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_geografico.html">5. Distribución geográfica</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06_bivariado.html">6. Análisis bivariado con la variable objetivo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="07_correlacion.html">7. Correlación y multicolinealidad</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_fuga_seleccion.html">8. Fuga de datos y selección de variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_conclusiones.html">9. Conclusiones del EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_bivariado.html">6. Análisis bivariado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_conclusiones.html">7. Conclusiones del EDA</a></li>
 </ul>
 
     </div>
@@ -354,7 +351,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datos">Datos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-de-este-eda">Objetivo de este EDA</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contenido">Contenido</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducibilidad">Reproducibilidad</a></li>
 </ul>
             </nav>
         </div>
@@ -380,7 +376,7 @@ Programa de Ciencia de Datos, Universidad del Norte, Barranquilla.</p>
 <ul class="simple">
 <li><p><strong>Archivo:</strong> <code class="docutils literal notranslate"><span class="pre">Dataset_Mundial_Final.csv</span></code>.</p></li>
 <li><p><strong>Contenido:</strong> 58 978 plantas fotovoltaicas de 183 países, descritas por 29 columnas.</p></li>
-<li><p><strong>Predictoras:</strong> 17 (13 numéricas y 4 categóricas). Son las mismas usadas en la segunda entrega, donde una regresión logística multinomial fijó la línea base: F1 macro de 0.62–0.65 y ROC AUC macro de 0.886.</p></li>
+<li><p><strong>Predictoras:</strong> 10 numéricas (<code class="docutils literal notranslate"><span class="pre">latitude</span></code>, <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">elevation</span></code>, <code class="docutils literal notranslate"><span class="pre">dist_to_road</span></code>, <code class="docutils literal notranslate"><span class="pre">ambient_temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">ghi</span></code>, <code class="docutils literal notranslate"><span class="pre">humidity</span></code>, <code class="docutils literal notranslate"><span class="pre">wind_speed</span></code>, <code class="docutils literal notranslate"><span class="pre">wind_direction</span></code> y <code class="docutils literal notranslate"><span class="pre">optimal_tilt</span></code>).</p></li>
 </ul>
 </section>
 <section id="objetivo-de-este-eda">
@@ -389,8 +385,7 @@ Programa de Ciencia de Datos, Universidad del Norte, Barranquilla.</p>
 <li><p>Describir la estructura y la calidad del dataset.</p></li>
 <li><p>Caracterizar el desbalance de la variable objetivo.</p></li>
 <li><p>Identificar qué predictoras separan mejor las clases y cómo se relacionan entre sí.</p></li>
-<li><p>Justificar las variables excluidas por fuga de datos.</p></li>
-<li><p>Traducir los hallazgos en <strong>decisiones concretas de preprocesamiento</strong> para los modelos de las siguientes etapas.</p></li>
+<li><p>Interpretar hallazgos para tener en cuenta para los modelos de las siguientes etapas.</p></li>
 </ol>
 </section>
 <section id="contenido">
@@ -400,22 +395,11 @@ Programa de Ciencia de Datos, Universidad del Norte, Barranquilla.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="01_carga_estructura.html">1. Carga y estructura del dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_calidad_datos.html">2. Calidad de datos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_variable_objetivo.html">3. Variable objetivo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_univariado.html">4. Análisis univariado</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_geografico.html">5. Distribución geográfica</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06_bivariado.html">6. Análisis bivariado con la variable objetivo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="07_correlacion.html">7. Correlación y multicolinealidad</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_fuga_seleccion.html">8. Fuga de datos y selección de variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_conclusiones.html">9. Conclusiones del EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_bivariado.html">6. Análisis bivariado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_conclusiones.html">7. Conclusiones del EDA</a></li>
 </ul>
-</div>
-</section>
-<section id="reproducibilidad">
-<h2>Reproducibilidad<a class="headerlink" href="#reproducibilidad" title="Link to this heading">#</a></h2>
-<p>Todos los capítulos se ejecutan al compilar el libro. Usan una semilla global <code class="docutils literal notranslate"><span class="pre">SEED</span> <span class="pre">=</span> <span class="pre">42</span></code> y las funciones compartidas de <code class="docutils literal notranslate"><span class="pre">utils.py</span></code>. Para compilarlo localmente:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
-jupyter-book<span class="w"> </span>build<span class="w"> </span>docs
-</pre></div>
 </div>
 </section>
 </section>
@@ -479,7 +463,6 @@ jupyter-book<span class="w"> </span>build<span class="w"> </span>docs
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datos">Datos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-de-este-eda">Objetivo de este EDA</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contenido">Contenido</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducibilidad">Reproducibilidad</a></li>
 </ul>
   </nav></div>
 

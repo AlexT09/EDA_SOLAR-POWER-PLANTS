@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>6. Análisis bivariado con la variable objetivo &#8212; EDA · Aptitud solar fotovoltaica</title>
+    <title>6. Análisis bivariado &#8212; EDA · Aptitud solar fotovoltaica</title>
   
   
   
@@ -62,7 +62,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Búsqueda" href="search.html" />
-    <link rel="next" title="7. Correlación y multicolinealidad" href="07_correlacion.html" />
+    <link rel="next" title="7. Conclusiones del EDA" href="07_conclusiones.html" />
     <link rel="prev" title="5. Distribución geográfica" href="05_geografico.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="es"/>
@@ -179,13 +179,10 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01_carga_estructura.html">1. Carga y estructura del dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_calidad_datos.html">2. Calidad de datos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_variable_objetivo.html">3. Variable objetivo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_univariado.html">4. Análisis univariado</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_geografico.html">5. Distribución geográfica</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Análisis bivariado con la variable objetivo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="07_correlacion.html">7. Correlación y multicolinealidad</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_fuga_seleccion.html">8. Fuga de datos y selección de variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_conclusiones.html">9. Conclusiones del EDA</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Análisis bivariado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_conclusiones.html">7. Conclusiones del EDA</a></li>
 </ul>
 
     </div>
@@ -339,7 +336,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>6. Análisis bivariado con la variable objetivo</h1>
+    <h1>6. Análisis bivariado</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -349,8 +346,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictoras-numericas">6.1 Predictoras numéricas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictoras-categoricas">6.2 Predictoras categóricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictoras-frente-a-la-clase">6.1 Predictoras frente a la clase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlacion-entre-predictoras">6.2 Correlación entre predictoras</a></li>
 </ul>
             </nav>
         </div>
@@ -362,20 +359,10 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="analisis-bivariado-con-la-variable-objetivo">
-<h1>6. Análisis bivariado con la variable objetivo<a class="headerlink" href="#analisis-bivariado-con-la-variable-objetivo" title="Link to this heading">#</a></h1>
-<p>Se mide cuánto separa cada predictora las tres clases de aptitud.</p>
-<ul class="simple">
-<li><p><strong>Numéricas:</strong> prueba de Kruskal-Wallis, no paramétrica porque varias variables son muy asimétricas, con tamaño del efecto <strong>ε²</strong> (0.01 pequeño, 0.06 mediano, 0.14 grande).</p></li>
-<li><p><strong>Categóricas:</strong> prueba <strong>χ²</strong> con <strong>V de Cramér</strong> (0.1 débil, 0.3 moderada, 0.5 fuerte).</p></li>
-</ul>
-<p>Con 58 978 observaciones casi cualquier diferencia es «significativa», así que la lectura se basa en el <strong>tamaño del efecto</strong>, no en el p-valor.</p>
-<div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
-</summary>
+  <section class="tex2jax_ignore mathjax_ignore" id="analisis-bivariado">
+<h1>6. Análisis bivariado<a class="headerlink" href="#analisis-bivariado" title="Link to this heading">#</a></h1>
+<p>Primero se compara cada predictora con la clase de aptitud (Baja, Media, Alta). Después se revisa cómo se relacionan las predictoras entre sí.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
@@ -387,298 +374,68 @@ document.write(`
 
 <span class="n">set_style</span><span class="p">()</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-</details>
 </div>
-<section id="predictoras-numericas">
-<h2>6.1 Predictoras numéricas<a class="headerlink" href="#predictoras-numericas" title="Link to this heading">#</a></h2>
+<section id="predictoras-frente-a-la-clase">
+<h2>6.1 Predictoras frente a la clase<a class="headerlink" href="#predictoras-frente-a-la-clase" title="Link to this heading">#</a></h2>
+<p>En el título de cada gráfico va el ε² de Kruskal-Wallis: la parte de la variación de la predictora que explica la clase.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">c</span><span class="p">:</span> <span class="n">kruskal_by_class</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">NUMERIC</span><span class="p">})</span><span class="o">.</span><span class="n">T</span>
-<span class="n">med</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">TARGET</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="n">NUMERIC</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="s2">&quot;mediana_&quot;</span><span class="p">)</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">res</span><span class="p">,</span> <span class="n">med</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;epsilon2&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">res</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;p_valor&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.1e}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;epsilon2&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mediana_&quot;</span><span class="p">)])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">NUMERIC</span><span class="p">):</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">TARGET</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">CLASS_ORDER</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">TARGET</span><span class="p">,</span>
+                <span class="n">palette</span><span class="o">=</span><span class="n">CLASS_COLORS</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">showfliers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="s2">&quot;dist_to_road&quot;</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">kruskal_by_class</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col</span><span class="p">)[</span><span class="s2">&quot;epsilon2&quot;</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Clase de aptitud&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">AXIS_LABELS</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">  (ε² = </span><span class="si">{</span><span class="n">eps</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">NUMERIC</span><span class="p">):]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><style type="text/css">
-</style>
-<table id="T_c9dce">
-  <thead>
-    <tr>
-      <th class="blank level0" >&nbsp;</th>
-      <th id="T_c9dce_level0_col0" class="col_heading level0 col0" >H</th>
-      <th id="T_c9dce_level0_col1" class="col_heading level0 col1" >p_valor</th>
-      <th id="T_c9dce_level0_col2" class="col_heading level0 col2" >epsilon2</th>
-      <th id="T_c9dce_level0_col3" class="col_heading level0 col3" >mediana_Baja</th>
-      <th id="T_c9dce_level0_col4" class="col_heading level0 col4" >mediana_Media</th>
-      <th id="T_c9dce_level0_col5" class="col_heading level0 col5" >mediana_Alta</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th id="T_c9dce_level0_row0" class="row_heading level0 row0" >longitude</th>
-      <td id="T_c9dce_row0_col0" class="data row0 col0" >12,891</td>
-      <td id="T_c9dce_row0_col1" class="data row0 col1" >0.0e+00</td>
-      <td id="T_c9dce_row0_col2" class="data row0 col2" >0.219</td>
-      <td id="T_c9dce_row0_col3" class="data row0 col3" >13.61</td>
-      <td id="T_c9dce_row0_col4" class="data row0 col4" >-2.97</td>
-      <td id="T_c9dce_row0_col5" class="data row0 col5" >101.08</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row1" class="row_heading level0 row1" >slope</th>
-      <td id="T_c9dce_row1_col0" class="data row1 col0" >3,713</td>
-      <td id="T_c9dce_row1_col1" class="data row1 col1" >0.0e+00</td>
-      <td id="T_c9dce_row1_col2" class="data row1 col2" >0.063</td>
-      <td id="T_c9dce_row1_col3" class="data row1 col3" >4.57</td>
-      <td id="T_c9dce_row1_col4" class="data row1 col4" >0.65</td>
-      <td id="T_c9dce_row1_col5" class="data row1 col5" >0.64</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row2" class="row_heading level0 row2" >dist_to_road</th>
-      <td id="T_c9dce_row2_col0" class="data row2 col0" >2,605</td>
-      <td id="T_c9dce_row2_col1" class="data row2 col1" >0.0e+00</td>
-      <td id="T_c9dce_row2_col2" class="data row2 col2" >0.044</td>
-      <td id="T_c9dce_row2_col3" class="data row2 col3" >3133.53</td>
-      <td id="T_c9dce_row2_col4" class="data row2 col4" >900.06</td>
-      <td id="T_c9dce_row2_col5" class="data row2 col5" >606.72</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row3" class="row_heading level0 row3" >latitude</th>
-      <td id="T_c9dce_row3_col0" class="data row3 col0" >2,176</td>
-      <td id="T_c9dce_row3_col1" class="data row3 col1" >0.0e+00</td>
-      <td id="T_c9dce_row3_col2" class="data row3 col2" >0.037</td>
-      <td id="T_c9dce_row3_col3" class="data row3 col3" >41.09</td>
-      <td id="T_c9dce_row3_col4" class="data row3 col4" >41.53</td>
-      <td id="T_c9dce_row3_col5" class="data row3 col5" >36.12</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row4" class="row_heading level0 row4" >elevation</th>
-      <td id="T_c9dce_row4_col0" class="data row4 col0" >1,396</td>
-      <td id="T_c9dce_row4_col1" class="data row4 col1" >8.7e-304</td>
-      <td id="T_c9dce_row4_col2" class="data row4 col2" >0.024</td>
-      <td id="T_c9dce_row4_col3" class="data row4 col3" >415.50</td>
-      <td id="T_c9dce_row4_col4" class="data row4 col4" >207.00</td>
-      <td id="T_c9dce_row4_col5" class="data row4 col5" >132.00</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row5" class="row_heading level0 row5" >wind_speed</th>
-      <td id="T_c9dce_row5_col0" class="data row5 col0" >1,333</td>
-      <td id="T_c9dce_row5_col1" class="data row5 col1" >3.7e-290</td>
-      <td id="T_c9dce_row5_col2" class="data row5 col2" >0.023</td>
-      <td id="T_c9dce_row5_col3" class="data row5 col3" >0.56</td>
-      <td id="T_c9dce_row5_col4" class="data row5 col4" >0.93</td>
-      <td id="T_c9dce_row5_col5" class="data row5 col5" >0.75</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row6" class="row_heading level0 row6" >ambient_temperature</th>
-      <td id="T_c9dce_row6_col0" class="data row6 col0" >785</td>
-      <td id="T_c9dce_row6_col1" class="data row6 col1" >3.1e-171</td>
-      <td id="T_c9dce_row6_col2" class="data row6 col2" >0.013</td>
-      <td id="T_c9dce_row6_col3" class="data row6 col3" >12.50</td>
-      <td id="T_c9dce_row6_col4" class="data row6 col4" >11.75</td>
-      <td id="T_c9dce_row6_col5" class="data row6 col5" >14.12</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row7" class="row_heading level0 row7" >area</th>
-      <td id="T_c9dce_row7_col0" class="data row7 col0" >341</td>
-      <td id="T_c9dce_row7_col1" class="data row7 col1" >8.7e-75</td>
-      <td id="T_c9dce_row7_col2" class="data row7 col2" >0.008</td>
-      <td id="T_c9dce_row7_col3" class="data row7 col3" >2645.21</td>
-      <td id="T_c9dce_row7_col4" class="data row7 col4" >14302.10</td>
-      <td id="T_c9dce_row7_col5" class="data row7 col5" >7709.43</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row8" class="row_heading level0 row8" >wind_direction</th>
-      <td id="T_c9dce_row8_col0" class="data row8 col0" >445</td>
-      <td id="T_c9dce_row8_col1" class="data row8 col1" >1.8e-97</td>
-      <td id="T_c9dce_row8_col2" class="data row8 col2" >0.008</td>
-      <td id="T_c9dce_row8_col3" class="data row8 col3" >200.11</td>
-      <td id="T_c9dce_row8_col4" class="data row8 col4" >230.59</td>
-      <td id="T_c9dce_row8_col5" class="data row8 col5" >209.98</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row9" class="row_heading level0 row9" >ghi</th>
-      <td id="T_c9dce_row9_col0" class="data row9 col0" >167</td>
-      <td id="T_c9dce_row9_col1" class="data row9 col1" >5.8e-37</td>
-      <td id="T_c9dce_row9_col2" class="data row9 col2" >0.003</td>
-      <td id="T_c9dce_row9_col3" class="data row9 col3" >4.98</td>
-      <td id="T_c9dce_row9_col4" class="data row9 col4" >4.25</td>
-      <td id="T_c9dce_row9_col5" class="data row9 col5" >4.48</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row10" class="row_heading level0 row10" >humidity</th>
-      <td id="T_c9dce_row10_col0" class="data row10 col0" >112</td>
-      <td id="T_c9dce_row10_col1" class="data row10 col1" >4.0e-25</td>
-      <td id="T_c9dce_row10_col2" class="data row10 col2" >0.002</td>
-      <td id="T_c9dce_row10_col3" class="data row10 col3" >68.33</td>
-      <td id="T_c9dce_row10_col4" class="data row10 col4" >68.33</td>
-      <td id="T_c9dce_row10_col5" class="data row10 col5" >70.64</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row11" class="row_heading level0 row11" >aspect</th>
-      <td id="T_c9dce_row11_col0" class="data row11 col0" >22</td>
-      <td id="T_c9dce_row11_col1" class="data row11 col1" >1.4e-05</td>
-      <td id="T_c9dce_row11_col2" class="data row11 col2" >0.000</td>
-      <td id="T_c9dce_row11_col3" class="data row11 col3" >175.12</td>
-      <td id="T_c9dce_row11_col4" class="data row11 col4" >175.60</td>
-      <td id="T_c9dce_row11_col5" class="data row11 col5" >168.93</td>
-    </tr>
-    <tr>
-      <th id="T_c9dce_level0_row12" class="row_heading level0 row12" >curvature</th>
-      <td id="T_c9dce_row12_col0" class="data row12 col0" >20</td>
-      <td id="T_c9dce_row12_col1" class="data row12 col1" >5.7e-05</td>
-      <td id="T_c9dce_row12_col2" class="data row12 col2" >0.000</td>
-      <td id="T_c9dce_row12_col3" class="data row12 col3" >0.00</td>
-      <td id="T_c9dce_row12_col4" class="data row12 col4" >0.00</td>
-      <td id="T_c9dce_row12_col5" class="data row12 col5" >0.00</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">))</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;epsilon2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">CLASS_COLORS</span><span class="p">[</span><span class="s2">&quot;Alta&quot;</span><span class="p">])</span>
-<span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">v</span> <span class="o">+</span> <span class="mf">0.003</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">8.5</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">lab</span> <span class="ow">in</span> <span class="p">[(</span><span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;pequeño&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.06</span><span class="p">,</span> <span class="s2">&quot;mediano&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.14</span><span class="p">,</span> <span class="s2">&quot;grande&quot;</span><span class="p">)]:</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">NEUTRAL</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">lab</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">NEUTRAL</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.6</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.4</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Tamaño del efecto ε² (Kruskal-Wallis)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Poder de separación de cada predictora numérica&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
+<img alt="_images/24eb5ffd38e0638720254993f006bce2744c7b8fd7dca33b809313880f4875ed.png" src="_images/24eb5ffd38e0638720254993f006bce2744c7b8fd7dca33b809313880f4875ed.png" />
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/c1d3a303f7f055d70c0698b3796ced9cd270cb153f5fecbe6daa923627bb1b5c.png" src="_images/c1d3a303f7f055d70c0698b3796ced9cd270cb153f5fecbe6daa923627bb1b5c.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;slope&quot;</span><span class="p">,</span> <span class="s2">&quot;dist_to_road&quot;</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;elevation&quot;</span><span class="p">,</span> <span class="s2">&quot;wind_speed&quot;</span><span class="p">]</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">top_vars</span><span class="p">):</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">col</span><span class="p">,</span> <span class="n">TARGET</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dist_to_road&quot;</span><span class="p">,</span> <span class="s2">&quot;slope&quot;</span><span class="p">,</span> <span class="s2">&quot;elevation&quot;</span><span class="p">):</span>
-        <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;log10(</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> + 1)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">TARGET</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">CLASS_ORDER</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">TARGET</span><span class="p">,</span>
-                   <span class="n">palette</span><span class="o">=</span><span class="n">CLASS_COLORS</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">inner</span><span class="o">=</span><span class="s2">&quot;quartile&quot;</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                   <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">cut</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Distribución por clase de las seis predictoras con mayor efecto&quot;</span><span class="p">,</span>
-             <span class="n">x</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/58e6428f57e42df7c3392d3fe007f353f8150ac88dcf8373b7aa6127be41f853.png" src="_images/58e6428f57e42df7c3392d3fe007f353f8150ac88dcf8373b7aa6127be41f853.png" />
-</div>
-</div>
-<p><strong>Lectura</strong></p>
 <ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">longitude</span></code> (ε² = 0.219, efecto grande)</strong> es por lejos la más discriminante. La mediana es 101° en Alta (Asia oriental), 13.6° en Baja (Europa) y −3.0° en Media (mezcla de Europa y EE. UU.). Confirma lo visto en el capítulo 5: separa regiones más que condiciones físicas.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">slope</span></code> (ε² = 0.063, efecto mediano)</strong> es la variable física más relevante. La mediana de las plantas Baja es 4.6°, unas siete veces la de Media y Alta (≈ 0.64°). Una pendiente pronunciada se asocia con baja aptitud.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">dist_to_road</span></code> (0.044)</strong> y <strong><code class="docutils literal notranslate"><span class="pre">elevation</span></code> (0.024)</strong>: las plantas Baja están más lejos de las vías (mediana de 3.1 km frente a 0.6 km en Alta) y más altas (416 m frente a 132 m). Es el perfil de terreno montañoso y remoto.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">latitude</span></code> (0.037)</strong> y <strong><code class="docutils literal notranslate"><span class="pre">wind_speed</span></code> (0.023)</strong> tienen efectos pequeños.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">curvature</span></code>, <code class="docutils literal notranslate"><span class="pre">aspect</span></code>, <code class="docutils literal notranslate"><span class="pre">humidity</span></code>, <code class="docutils literal notranslate"><span class="pre">ghi</span></code>, <code class="docutils literal notranslate"><span class="pre">area</span></code> y <code class="docutils literal notranslate"><span class="pre">wind_direction</span></code></strong> tienen efecto prácticamente nulo (ε² &lt; 0.01) por sí solas. Pueden aportar en interacción con otras variables, lo que favorece modelos no lineales (árboles y ensambles).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">longitude</span></code></strong> es la que más separa (ε² = 0.22).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">dist_to_road</span></code></strong> (escala log): las plantas Baja suelen estar más lejos de una vía (3.1 km) que las Media (0.9 km) y las Alta (0.6 km).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">elevation</span></code></strong>: la aptitud baja a medida que sube la altura (132 m en Alta, 207 m en Media, 416 m en Baja).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">latitude</span></code></strong> y <strong><code class="docutils literal notranslate"><span class="pre">optimal_tilt</span></code></strong>: Alta está algo más cerca del Ecuador y por eso su inclinación óptima es un poco menor.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">wind_speed</span></code></strong>: Media tiene el viento más fuerte y Baja el más débil. La relación no es uniforme, sube y luego baja.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ambient_temperature</span></code></strong>, <strong><code class="docutils literal notranslate"><span class="pre">wind_direction</span></code></strong>, <strong><code class="docutils literal notranslate"><span class="pre">ghi</span></code></strong> y <strong><code class="docutils literal notranslate"><span class="pre">humidity</span></code></strong> muestran cajas muy parecidas entre clases, por sí solas casi no separan.</p></li>
 </ul>
 </section>
-<section id="predictoras-categoricas">
-<h2>6.2 Predictoras categóricas<a class="headerlink" href="#predictoras-categoricas" title="Link to this heading">#</a></h2>
+<section id="correlacion-entre-predictoras">
+<h2>6.2 Correlación entre predictoras<a class="headerlink" href="#correlacion-entre-predictoras" title="Link to this heading">#</a></h2>
+<p>Se compara cada predictora con las demás para analizar las variables redundantes. Se usa la correlación de <strong>Spearman</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">c</span><span class="p">:</span> <span class="n">cramers_v</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">TARGET</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CATEGORICAL</span><span class="p">})</span><span class="o">.</span><span class="n">T</span>
-<span class="n">cv</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;V&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;chi2&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;p_valor&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.1e}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="p">})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">NUMERIC</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;spearman&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu_r&quot;</span><span class="p">,</span>
+            <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">},</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Correlación de Spearman entre predictoras&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><style type="text/css">
-</style>
-<table id="T_13267">
-  <thead>
-    <tr>
-      <th class="blank level0" >&nbsp;</th>
-      <th id="T_13267_level0_col0" class="col_heading level0 col0" >chi2</th>
-      <th id="T_13267_level0_col1" class="col_heading level0 col1" >p_valor</th>
-      <th id="T_13267_level0_col2" class="col_heading level0 col2" >V</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th id="T_13267_level0_row0" class="row_heading level0 row0" >slope_type</th>
-      <td id="T_13267_row0_col0" class="data row0 col0" >7,853</td>
-      <td id="T_13267_row0_col1" class="data row0 col1" >0.0e+00</td>
-      <td id="T_13267_row0_col2" class="data row0 col2" >0.258</td>
-    </tr>
-    <tr>
-      <th id="T_13267_level0_row1" class="row_heading level0 row1" >curvature_type</th>
-      <td id="T_13267_row1_col0" class="data row1 col0" >2,458</td>
-      <td id="T_13267_row1_col1" class="data row1 col1" >0.0e+00</td>
-      <td id="T_13267_row1_col2" class="data row1 col2" >0.144</td>
-    </tr>
-    <tr>
-      <th id="T_13267_level0_row2" class="row_heading level0 row2" >dt_wind</th>
-      <td id="T_13267_row2_col0" class="data row2 col0" >1,089</td>
-      <td id="T_13267_row2_col1" class="data row2 col1" >9.7e-224</td>
-      <td id="T_13267_row2_col2" class="data row2 col2" >0.096</td>
-    </tr>
-    <tr>
-      <th id="T_13267_level0_row3" class="row_heading level0 row3" >aspect_type</th>
-      <td id="T_13267_row3_col0" class="data row3 col0" >562</td>
-      <td id="T_13267_row3_col1" class="data row3 col1" >2.2e-109</td>
-      <td id="T_13267_row3_col2" class="data row3 col2" >0.069</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">CATEGORICAL</span><span class="p">):</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">TARGET</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)[</span><span class="n">CLASS_ORDER</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;Baja&quot;</span><span class="p">)</span>
-    <span class="n">left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CLASS_ORDER</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">left</span><span class="o">=</span><span class="n">left</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">CLASS_COLORS</span><span class="p">[</span><span class="n">c</span><span class="p">],</span>
-                <span class="n">label</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">SURFACE</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-        <span class="n">left</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">  (V = </span><span class="si">{</span><span class="n">cv</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">col</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;V&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.08</span><span class="p">))</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Composición de la aptitud dentro de cada categoría (%)&quot;</span><span class="p">,</span>
-             <span class="n">x</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/5f9c0d1dff83700cfdae203ee90d7c705c780c3ceea38ef9dda12a612af59969.png" src="_images/5f9c0d1dff83700cfdae203ee90d7c705c780c3ceea38ef9dda12a612af59969.png" />
+<img alt="_images/3e7e17b9bf22e55baac2b316765740b79b9c70aaa7a9435e6f778fad4f3fdebc.png" src="_images/3e7e17b9bf22e55baac2b316765740b79b9c70aaa7a9435e6f778fad4f3fdebc.png" />
 </div>
 </div>
 <ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">slope_type</span></code> (V = 0.258, asociación moderada)</strong> es la categórica más informativa. En terreno <em>plano o casi plano</em> solo el 0.1 % de las plantas es Baja; en terreno <em>moderado</em> lo es el 22.1 % y en <em>fuerte</em> el 19.2 %. Es coherente con <code class="docutils literal notranslate"><span class="pre">slope</span></code>.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">curvature_type</span></code> (V = 0.144)</strong>: las superficies convexas (crestas) y cóncavas (valles) tienen entre 6 y 8 veces más plantas Baja que las planas (11.6 % y 9.7 % frente a 1.5 %). Aunque <code class="docutils literal notranslate"><span class="pre">curvature</span></code> numérica no separa las clases, <strong>su versión categórica sí</strong>. Esto sugiere que importa la magnitud de la curvatura y no su signo, por lo que vale la pena probar <code class="docutils literal notranslate"><span class="pre">abs(curvature)</span></code>.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">dt_wind</span></code> (0.096)</strong> y <strong><code class="docutils literal notranslate"><span class="pre">aspect_type</span></code> (0.069)</strong> tienen una asociación débil.</p></li>
+<li><p>Hay un <strong>bloque de tres variables redundantes</strong>: <code class="docutils literal notranslate"><span class="pre">latitude</span></code> y <code class="docutils literal notranslate"><span class="pre">optimal_tilt</span></code> (ρ = 0.91), <code class="docutils literal notranslate"><span class="pre">optimal_tilt</span></code> y <code class="docutils literal notranslate"><span class="pre">ambient_temperature</span></code> (−0.85), y <code class="docutils literal notranslate"><span class="pre">latitude</span></code> y <code class="docutils literal notranslate"><span class="pre">ambient_temperature</span></code> (−0.82).</p></li>
+<li><p>Le siguen relaciones moderadas entre las variables climáticas: <code class="docutils literal notranslate"><span class="pre">latitude</span></code> con <code class="docutils literal notranslate"><span class="pre">ghi</span></code> (−0.60), <code class="docutils literal notranslate"><span class="pre">ghi</span></code> con <code class="docutils literal notranslate"><span class="pre">humidity</span></code> (−0.58) y <code class="docutils literal notranslate"><span class="pre">ambient_temperature</span></code> con <code class="docutils literal notranslate"><span class="pre">ghi</span></code> (0.53).</p></li>
 </ul>
+<p>Para la regresión logística esta colinealidad infla la varianza de los coeficientes. Conviene probar el modelo sin <code class="docutils literal notranslate"><span class="pre">optimal_tilt</span></code> o con regularización;</p>
 </section>
 </section>
 
@@ -722,11 +479,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="07_correlacion.html"
+       href="07_conclusiones.html"
        title="siguiente página">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">siguiente</p>
-        <p class="prev-next-title">7. Correlación y multicolinealidad</p>
+        <p class="prev-next-title">7. Conclusiones del EDA</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -746,8 +503,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictoras-numericas">6.1 Predictoras numéricas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictoras-categoricas">6.2 Predictoras categóricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictoras-frente-a-la-clase">6.1 Predictoras frente a la clase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlacion-entre-predictoras">6.2 Correlación entre predictoras</a></li>
 </ul>
   </nav></div>
 

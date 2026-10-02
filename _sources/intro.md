@@ -13,26 +13,16 @@ Antes de invertir en una planta solar hay que saber si el sitio es apto. Este pr
 
 - **Archivo:** `Dataset_Mundial_Final.csv`.
 - **Contenido:** 58 978 plantas fotovoltaicas de 183 países, descritas por 29 columnas.
-- **Predictoras:** 17 (13 numéricas y 4 categóricas). Son las mismas usadas en la segunda entrega, donde una regresión logística multinomial fijó la línea base: F1 macro de 0.62–0.65 y ROC AUC macro de 0.886.
+- **Predictoras:** 10 numéricas (`latitude`, `longitude`, `elevation`, `dist_to_road`, `ambient_temperature`, `ghi`, `humidity`, `wind_speed`, `wind_direction` y `optimal_tilt`).
 
 ## Objetivo de este EDA
 
 1. Describir la estructura y la calidad del dataset.
 2. Caracterizar el desbalance de la variable objetivo.
 3. Identificar qué predictoras separan mejor las clases y cómo se relacionan entre sí.
-4. Justificar las variables excluidas por fuga de datos.
-5. Traducir los hallazgos en **decisiones concretas de preprocesamiento** para los modelos de las siguientes etapas.
+4. Interpretar hallazgos para tener en cuenta para los modelos de las siguientes etapas.
 
 ## Contenido
 
 ```{tableofcontents}
-```
-
-## Reproducibilidad
-
-Todos los capítulos se ejecutan al compilar el libro. Usan una semilla global `SEED = 42` y las funciones compartidas de `utils.py`. Para compilarlo localmente:
-
-```bash
-pip install -r requirements.txt
-jupyter-book build docs
 ```

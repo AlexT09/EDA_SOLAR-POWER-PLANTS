@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>9. Conclusiones del EDA &#8212; EDA · Aptitud solar fotovoltaica</title>
+    <title>7. Conclusiones del EDA &#8212; EDA · Aptitud solar fotovoltaica</title>
   
   
   
@@ -58,11 +58,11 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '09_conclusiones';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '07_conclusiones';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Búsqueda" href="search.html" />
-    <link rel="prev" title="8. Fuga de datos y selección de variables" href="08_fuga_seleccion.html" />
+    <link rel="prev" title="6. Análisis bivariado" href="06_bivariado.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="es"/>
   </head>
@@ -178,13 +178,10 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01_carga_estructura.html">1. Carga y estructura del dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_calidad_datos.html">2. Calidad de datos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_variable_objetivo.html">3. Variable objetivo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_univariado.html">4. Análisis univariado</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_geografico.html">5. Distribución geográfica</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06_bivariado.html">6. Análisis bivariado con la variable objetivo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="07_correlacion.html">7. Correlación y multicolinealidad</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_fuga_seleccion.html">8. Fuga de datos y selección de variables</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Conclusiones del EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_bivariado.html">6. Análisis bivariado</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Conclusiones del EDA</a></li>
 </ul>
 
     </div>
@@ -254,7 +251,7 @@
       
       
       
-      <li><a href="_sources/09_conclusiones.md" target="_blank"
+      <li><a href="_sources/07_conclusiones.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Descargar archivo fuente"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -338,7 +335,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>9. Conclusiones del EDA</h1>
+    <h1>7. Conclusiones del EDA</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -348,9 +345,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-principales">Hallazgos principales</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-de-preprocesamiento">Decisiones de preprocesamiento</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implicaciones-para-la-siguiente-etapa">Implicaciones para la siguiente etapa</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos">Hallazgos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#para-preprocesamiento">Para preprocesamiento</a></li>
 </ul>
             </nav>
         </div>
@@ -363,93 +359,31 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="conclusiones-del-eda">
-<h1>9. Conclusiones del EDA<a class="headerlink" href="#conclusiones-del-eda" title="Link to this heading">#</a></h1>
-<section id="hallazgos-principales">
-<h2>Hallazgos principales<a class="headerlink" href="#hallazgos-principales" title="Link to this heading">#</a></h2>
+<h1>7. Conclusiones del EDA<a class="headerlink" href="#conclusiones-del-eda" title="Link to this heading">#</a></h1>
+<section id="hallazgos">
+<h2>Hallazgos<a class="headerlink" href="#hallazgos" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p><strong>El desbalance es severo.</strong> La distribución es 75.10 % Alta, 21.69 % Media y 3.21 % Baja (razón 23 : 1). Un clasificador trivial ya obtiene un 75 % de exactitud, por lo que la evaluación debe basarse en el <strong>F1 macro, el recall por clase y el ROC AUC macro</strong>.</p></li>
-<li><p><strong>La geografía domina la señal.</strong> <code class="docutils literal notranslate"><span class="pre">longitude</span></code> es la predictora más discriminante (ε² = 0.22). Funciona como indicador de región: Asia oriental es casi toda Alta, EE. UU. es mayoritariamente Media y la clase Baja se concentra en Europa.</p></li>
-<li><p><strong>El terreno es la señal física.</strong> <code class="docutils literal notranslate"><span class="pre">slope</span></code> (ε² = 0.06) y <code class="docutils literal notranslate"><span class="pre">slope_type</span></code> (V = 0.26) muestran que la pendiente pronunciada se asocia con baja aptitud. Le siguen <code class="docutils literal notranslate"><span class="pre">curvature_type</span></code>, <code class="docutils literal notranslate"><span class="pre">dist_to_road</span></code> y <code class="docutils literal notranslate"><span class="pre">elevation</span></code>: las plantas Baja están en terreno más alto, más remoto y menos plano.</p></li>
-<li><p><strong>Hay variables débiles por sí solas.</strong> <code class="docutils literal notranslate"><span class="pre">aspect</span></code>, <code class="docutils literal notranslate"><span class="pre">curvature</span></code> numérica, <code class="docutils literal notranslate"><span class="pre">humidity</span></code>, <code class="docutils literal notranslate"><span class="pre">ghi</span></code>, <code class="docutils literal notranslate"><span class="pre">area</span></code> y <code class="docutils literal notranslate"><span class="pre">wind_direction</span></code> casi no separan las clases de forma individual. Esto motiva modelos capaces de capturar interacciones (árboles, Random Forest, XGBoost).</p></li>
-<li><p><strong>No hay multicolinealidad problemática.</strong> Todos los VIF son menores de 3.5. El único par fuerte es <code class="docutils literal notranslate"><span class="pre">latitude</span></code> y <code class="docutils literal notranslate"><span class="pre">ambient_temperature</span></code> (ρ = −0.82).</p></li>
-<li><p><strong>Hay que corregir varios problemas de calidad:</strong></p>
-<ul class="simple">
-<li><p>Los nulos de <code class="docutils literal notranslate"><span class="pre">area</span></code> (27.69 %) <strong>no son aleatorios</strong>: 33 % en Alta frente a 11–12 % en Baja y Media.</p></li>
-<li><p>3 245 filas duplican a otra en predictoras y clase.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">area</span></code> y <code class="docutils literal notranslate"><span class="pre">dist_to_road</span></code> tienen colas extremas.</p></li>
-<li><p>3 registros tienen <code class="docutils literal notranslate"><span class="pre">ghi</span> <span class="pre">=</span> <span class="pre">0</span></code> o <code class="docutils literal notranslate"><span class="pre">humidity</span> <span class="pre">=</span> <span class="pre">0</span></code>.</p></li>
-</ul>
-</li>
+<li><p><strong>Desbalance severo:</strong> 75 % Alta, 22 % Media y 3 % Baja. Hay que evaluar con <strong>F1 macro y recall por clase</strong>.</p></li>
+<li><p><strong>La ubicación domina:</strong> <code class="docutils literal notranslate"><span class="pre">longitude</span></code> es, con diferencia, la variable que más separa las clases (ε² = 0.22).</p></li>
+<li><p><strong>Las variables climáticas son débiles por sí solas:</strong> <code class="docutils literal notranslate"><span class="pre">ghi</span></code>, <code class="docutils literal notranslate"><span class="pre">humidity</span></code>, <code class="docutils literal notranslate"><span class="pre">ambient_temperature</span></code> y <code class="docutils literal notranslate"><span class="pre">wind_direction</span></code> casi no separan las clases (ε² &lt; 0.015).</p></li>
+<li><p><strong>Redundancia:</strong> <code class="docutils literal notranslate"><span class="pre">latitude</span></code>, <code class="docutils literal notranslate"><span class="pre">optimal_tilt</span></code> y <code class="docutils literal notranslate"><span class="pre">ambient_temperature</span></code> forman un bloque correlacionado.</p></li>
+<li><p><strong>Calidad:</strong> las 10 predictoras no tienen nulos; hay 6 406 filas duplicadas en predictoras y clase, una cola extrema en <code class="docutils literal notranslate"><span class="pre">dist_to_road</span></code> y unos pocos ceros inconsistentes en <code class="docutils literal notranslate"><span class="pre">ghi</span></code>, <code class="docutils literal notranslate"><span class="pre">humidity</span></code> y <code class="docutils literal notranslate"><span class="pre">wind_speed</span></code>.</p></li>
 </ol>
 </section>
-<section id="decisiones-de-preprocesamiento">
-<h2>Decisiones de preprocesamiento<a class="headerlink" href="#decisiones-de-preprocesamiento" title="Link to this heading">#</a></h2>
-<p>Todas se implementan dentro de un <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> / <code class="docutils literal notranslate"><span class="pre">ColumnTransformer</span></code> ajustado solo con el conjunto de entrenamiento.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Paso</p></th>
-<th class="head"><p>Decisión</p></th>
-<th class="head"><p>Justificación (capítulo)</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Variables</p></td>
-<td><p>17 predictoras; se excluyen <code class="docutils literal notranslate"><span class="pre">solar_aptitude</span></code>, <code class="docutils literal notranslate"><span class="pre">solar_aptitude_rounded</span></code>, <code class="docutils literal notranslate"><span class="pre">capacity</span></code>, <code class="docutils literal notranslate"><span class="pre">optimal_tilt</span></code>, <code class="docutils literal notranslate"><span class="pre">pv_potential</span></code>, <code class="docutils literal notranslate"><span class="pre">operational_status</span></code> y los identificadores</p></td>
-<td><p>Fuga de datos o información posterior a la inversión (8)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Duplicados</p></td>
-<td><p>Eliminar los 3 245 duplicados de predictoras + clase antes de la partición</p></td>
-<td><p>Evitar que una copia esté en entrenamiento y su gemela en prueba (2)</p></td>
-</tr>
-<tr class="row-even"><td><p>Partición</p></td>
-<td><p>80/20 estratificada, <code class="docutils literal notranslate"><span class="pre">random_state</span> <span class="pre">=</span> <span class="pre">42</span></code>; validación <code class="docutils literal notranslate"><span class="pre">StratifiedKFold(5)</span></code></p></td>
-<td><p>Preservar el 3.21 % de Baja en cada pliegue (3)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Nulos</p></td>
-<td><p>Imputación por mediana en <code class="docutils literal notranslate"><span class="pre">area</span></code>, más un indicador <code class="docutils literal notranslate"><span class="pre">area_missing</span></code></p></td>
-<td><p>Los nulos se asocian con la clase (2)</p></td>
-</tr>
-<tr class="row-even"><td><p>Asimetría</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">log1p</span></code> en <code class="docutils literal notranslate"><span class="pre">area</span></code> y <code class="docutils literal notranslate"><span class="pre">dist_to_road</span></code>; winsorización en el p99 para KNN y SVM</p></td>
-<td><p>Asimetrías de 72.6 y 48.7 (2, 4)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Valores imposibles</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">ghi</span> <span class="pre">=</span> <span class="pre">0</span></code> y <code class="docutils literal notranslate"><span class="pre">humidity</span> <span class="pre">=</span> <span class="pre">0</span></code> → nulo e imputar</p></td>
-<td><p>Físicamente imposibles (2)</p></td>
-</tr>
-<tr class="row-even"><td><p>Variables circulares</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">aspect</span></code> y <code class="docutils literal notranslate"><span class="pre">wind_direction</span></code> → seno y coseno</p></td>
-<td><p>0° y 360° son el mismo valor (4)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Categóricas</p></td>
-<td><p>One-hot (39 columnas); agrupar niveles con menos del 1 % (<code class="docutils literal notranslate"><span class="pre">Escarpado</span> <span class="pre">o</span> <span class="pre">abrupto</span></code>, vientos N/NE/NW)</p></td>
-<td><p>Niveles casi vacíos (4)</p></td>
-</tr>
-<tr class="row-even"><td><p>Escalado</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> en numéricas (KNN, SVM, logística, Ridge y Lasso)</p></td>
-<td><p>Escalas muy distintas entre variables (4)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Desbalance</p></td>
-<td><p>Comparar sin balanceo, <code class="docutils literal notranslate"><span class="pre">class_weight='balanced'</span></code>, SMOTE y ADASYN, solo dentro de los pliegues de entrenamiento</p></td>
-<td><p>Razón de 23 : 1 (3)</p></td>
-</tr>
-<tr class="row-even"><td><p>Robustez</p></td>
-<td><p>Validación adicional agrupada por país; revisar con SHAP el peso de las coordenadas</p></td>
-<td><p>La clase depende de la región (5)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="implicaciones-para-la-siguiente-etapa">
-<h2>Implicaciones para la siguiente etapa<a class="headerlink" href="#implicaciones-para-la-siguiente-etapa" title="Link to this heading">#</a></h2>
-<p>La segunda entrega dejó como referencia un <strong>F1 macro de 0.62–0.65</strong>. El EDA indica que el margen de mejora está en:</p>
+<section id="para-preprocesamiento">
+<h2>Para preprocesamiento<a class="headerlink" href="#para-preprocesamiento" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Capturar interacciones no lineales</strong> entre terreno y clima, con árboles y ensambles.</p></li>
-<li><p><strong>Limpiar la fuga entre particiones</strong> que generan los duplicados.</p></li>
-<li><p><strong>Aprovechar la información que hoy se descarta:</strong> el patrón de nulos de <code class="docutils literal notranslate"><span class="pre">area</span></code> y el carácter circular de <code class="docutils literal notranslate"><span class="pre">aspect</span></code> y <code class="docutils literal notranslate"><span class="pre">wind_direction</span></code>.</p></li>
+<li><p><strong>Variables:</strong> usar las 10 predictoras excluyendo <code class="docutils literal notranslate"><span class="pre">slope</span></code>, <code class="docutils literal notranslate"><span class="pre">aspect</span></code>, <code class="docutils literal notranslate"><span class="pre">curvature</span></code> y sus versiones categóricas por fuga de datos, además de <code class="docutils literal notranslate"><span class="pre">solar_aptitude</span></code>, <code class="docutils literal notranslate"><span class="pre">solar_aptitude_rounded</span></code>, <code class="docutils literal notranslate"><span class="pre">capacity</span></code> y <code class="docutils literal notranslate"><span class="pre">pv_potential</span></code>.</p></li>
+<li><p><strong>Duplicados:</strong> eliminarlos antes de partir los datos.</p></li>
+<li><p><strong>Partición:</strong> 80/20 estratificada y validación cruzada estratificada de 5 pliegues.</p></li>
+<li><p><strong>Ceros inconsistentes:</strong> pasarlos a nulos e imputarlos con la mediana.</p></li>
+<li><p><strong>Extremos:</strong> logaritmo en <code class="docutils literal notranslate"><span class="pre">dist_to_road</span></code>.</p></li>
+<li><p><strong>Codificación:</strong> seno y coseno para <code class="docutils literal notranslate"><span class="pre">wind_direction</span></code>.</p></li>
+<li><p><strong>Colinealidad:</strong> en la regresión logística, probar sin <code class="docutils literal notranslate"><span class="pre">optimal_tilt</span></code> o con regularización.</p></li>
+<li><p><strong>Escalado:</strong> <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> para los modelos sensibles a la escala.</p></li>
+<li><p><strong>Desbalance:</strong> comparar <code class="docutils literal notranslate"><span class="pre">class_weight='balanced'</span></code>.</p></li>
+<li><p><strong>Robustez:</strong> revisar que el modelo no se limite a memorizar la región a través de <code class="docutils literal notranslate"><span class="pre">longitude</span></code>; evaluar también con validación agrupada por país.</p></li>
 </ul>
-<p>Hay que vigilar especialmente que las ganancias no provengan solo de memorizar la región a través de <code class="docutils literal notranslate"><span class="pre">longitude</span></code>.</p>
 </section>
 </section>
 
@@ -484,12 +418,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="08_fuga_seleccion.html"
+       href="06_bivariado.html"
        title="página anterior">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">anterior</p>
-        <p class="prev-next-title">8. Fuga de datos y selección de variables</p>
+        <p class="prev-next-title">6. Análisis bivariado</p>
       </div>
     </a>
 </div>
@@ -508,9 +442,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-principales">Hallazgos principales</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-de-preprocesamiento">Decisiones de preprocesamiento</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implicaciones-para-la-siguiente-etapa">Implicaciones para la siguiente etapa</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos">Hallazgos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#para-preprocesamiento">Para preprocesamiento</a></li>
 </ul>
   </nav></div>
 

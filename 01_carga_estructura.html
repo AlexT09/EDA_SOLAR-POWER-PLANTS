@@ -179,13 +179,10 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Carga y estructura del dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_calidad_datos.html">2. Calidad de datos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03_variable_objetivo.html">3. Variable objetivo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_univariado.html">4. Análisis univariado</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_geografico.html">5. Distribución geográfica</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06_bivariado.html">6. Análisis bivariado con la variable objetivo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="07_correlacion.html">7. Correlación y multicolinealidad</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08_fuga_seleccion.html">8. Fuga de datos y selección de variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09_conclusiones.html">9. Conclusiones del EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_bivariado.html">6. Análisis bivariado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_conclusiones.html">7. Conclusiones del EDA</a></li>
 </ul>
 
     </div>
@@ -365,7 +362,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="carga-y-estructura-del-dataset">
 <h1>1. Carga y estructura del dataset<a class="headerlink" href="#carga-y-estructura-del-dataset" title="Link to this heading">#</a></h1>
-<p>El dataset <code class="docutils literal notranslate"><span class="pre">Dataset_Mundial_Final.csv</span></code> reúne <strong>58 978 plantas solares fotovoltaicas</strong> de todo el mundo, descritas por 29 columnas de terreno, clima, logística y potencia. El archivo usa <code class="docutils literal notranslate"><span class="pre">;</span></code> como separador y coma decimal; la función <code class="docutils literal notranslate"><span class="pre">load_data()</span></code> del módulo <code class="docutils literal notranslate"><span class="pre">utils.py</span></code> lo carga y convierte la clase objetivo en una categoría ordenada <code class="docutils literal notranslate"><span class="pre">Baja</span> <span class="pre">&lt;</span> <span class="pre">Media</span> <span class="pre">&lt;</span> <span class="pre">Alta</span></code>.</p>
+<p>El dataset <code class="docutils literal notranslate"><span class="pre">Dataset_Mundial_Final.csv</span></code> reúne <strong>58 978 plantas solares fotovoltaicas</strong> de todo el mundo, descritas por 29 columnas de terreno, clima, logística y potencia.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
@@ -605,7 +602,7 @@ document.write(`
 </div>
 <section id="tipos-de-variable">
 <h2>1.1 Tipos de variable<a class="headerlink" href="#tipos-de-variable" title="Link to this heading">#</a></h2>
-<p>El dataset combina 19 columnas numéricas y 10 de texto. Ninguna columna numérica viene como texto: la lectura con <code class="docutils literal notranslate"><span class="pre">decimal=','</span></code> resuelve correctamente los decimales.</p>
+<p>El dataset combina 19 columnas numéricas y 10 de texto.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tipos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
@@ -823,7 +820,10 @@ document.write(`
 </section>
 <section id="rol-de-cada-variable-en-el-modelado">
 <h2>1.2 Rol de cada variable en el modelado<a class="headerlink" href="#rol-de-cada-variable-en-el-modelado" title="Link to this heading">#</a></h2>
-<p>Se mantiene la definición de la segunda entrega: la variable objetivo es <code class="docutils literal notranslate"><span class="pre">solar_aptittude_class</span></code> y se usan <strong>17 predictoras</strong> (13 numéricas y 4 categóricas). Las demás columnas se excluyen por fuga de datos, por ser posteriores a la decisión de inversión o por ser identificadores; el capítulo 8 justifica cada exclusión.</p>
+<p>La variable objetivo es <code class="docutils literal notranslate"><span class="pre">solar_aptittude_class</span></code> y se usan <strong>10 predictoras numéricas</strong>.</p>
+<ul class="simple">
+<li><p><strong>Excluidas:</strong> <code class="docutils literal notranslate"><span class="pre">slope</span></code>, <code class="docutils literal notranslate"><span class="pre">aspect</span></code> y <code class="docutils literal notranslate"><span class="pre">curvature</span></code> entran directamente en la fórmula del índice de aptitud; <code class="docutils literal notranslate"><span class="pre">slope_type</span></code>, <code class="docutils literal notranslate"><span class="pre">aspect_type</span></code> y <code class="docutils literal notranslate"><span class="pre">curvature_type</span></code> son esas mismas variables discretizadas; <code class="docutils literal notranslate"><span class="pre">solar_aptitude</span></code> y <code class="docutils literal notranslate"><span class="pre">solar_aptitude_rounded</span></code> son la versión numérica del objetivo, <code class="docutils literal notranslate"><span class="pre">capacity</span></code> no se conoce antes de construir la planta, <code class="docutils literal notranslate"><span class="pre">pv_potential</span></code>, <code class="docutils literal notranslate"><span class="pre">area</span></code>, <code class="docutils literal notranslate"><span class="pre">size</span></code>, <code class="docutils literal notranslate"><span class="pre">dt_wind</span></code> y <code class="docutils literal notranslate"><span class="pre">operational_status</span></code>.</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roles</span> <span class="o">=</span> <span class="n">variable_roles</span><span class="p">()</span>
@@ -860,27 +860,31 @@ document.write(`
   <tbody>
     <tr>
       <th>Descriptiva (no predictora)</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Excluida (no disponible a priori / otro problema)</th>
       <td>2</td>
     </tr>
     <tr>
-      <th>Excluida (fuga / posterior a la decisión)</th>
-      <td>6</td>
+      <th>Excluida por fuga de datos</th>
+      <td>8</td>
     </tr>
     <tr>
       <th>Identificador</th>
       <td>3</td>
     </tr>
     <tr>
+      <th>No usada en la segunda entrega</th>
+      <td>4</td>
+    </tr>
+    <tr>
       <th>Objetivo</th>
       <td>1</td>
     </tr>
     <tr>
-      <th>Predictora categórica</th>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>Predictora numérica</th>
-      <td>13</td>
+      <th>Predictora</th>
+      <td>10</td>
     </tr>
   </tbody>
 </table>
@@ -923,142 +927,142 @@ document.write(`
     </tr>
     <tr>
       <th>1</th>
-      <td>longitude</td>
-      <td>Predictora numérica</td>
+      <td>latitude</td>
+      <td>Predictora</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>latitude</td>
-      <td>Predictora numérica</td>
+      <td>longitude</td>
+      <td>Predictora</td>
     </tr>
     <tr>
       <th>3</th>
       <td>elevation</td>
-      <td>Predictora numérica</td>
+      <td>Predictora</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>area</td>
-      <td>Predictora numérica</td>
+      <td>dist_to_road</td>
+      <td>Predictora</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>slope</td>
-      <td>Predictora numérica</td>
+      <td>ambient_temperature</td>
+      <td>Predictora</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>curvature</td>
-      <td>Predictora numérica</td>
+      <td>ghi</td>
+      <td>Predictora</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>aspect</td>
-      <td>Predictora numérica</td>
+      <td>humidity</td>
+      <td>Predictora</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>dist_to_road</td>
-      <td>Predictora numérica</td>
+      <td>wind_speed</td>
+      <td>Predictora</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>ambient_temperature</td>
-      <td>Predictora numérica</td>
+      <td>wind_direction</td>
+      <td>Predictora</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>ghi</td>
-      <td>Predictora numérica</td>
+      <td>optimal_tilt</td>
+      <td>Predictora</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>humidity</td>
-      <td>Predictora numérica</td>
+      <td>slope</td>
+      <td>Excluida por fuga de datos</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>wind_speed</td>
-      <td>Predictora numérica</td>
+      <td>aspect</td>
+      <td>Excluida por fuga de datos</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>wind_direction</td>
-      <td>Predictora numérica</td>
+      <td>curvature</td>
+      <td>Excluida por fuga de datos</td>
     </tr>
     <tr>
       <th>14</th>
       <td>slope_type</td>
-      <td>Predictora categórica</td>
+      <td>Excluida por fuga de datos</td>
     </tr>
     <tr>
       <th>15</th>
-      <td>curvature_type</td>
-      <td>Predictora categórica</td>
+      <td>aspect_type</td>
+      <td>Excluida por fuga de datos</td>
     </tr>
     <tr>
       <th>16</th>
-      <td>aspect_type</td>
-      <td>Predictora categórica</td>
+      <td>curvature_type</td>
+      <td>Excluida por fuga de datos</td>
     </tr>
     <tr>
       <th>17</th>
-      <td>dt_wind</td>
-      <td>Predictora categórica</td>
+      <td>solar_aptitude</td>
+      <td>Excluida por fuga de datos</td>
     </tr>
     <tr>
       <th>18</th>
-      <td>solar_aptitude</td>
-      <td>Excluida (fuga / posterior a la decisión)</td>
+      <td>solar_aptitude_rounded</td>
+      <td>Excluida por fuga de datos</td>
     </tr>
     <tr>
       <th>19</th>
-      <td>solar_aptitude_rounded</td>
-      <td>Excluida (fuga / posterior a la decisión)</td>
+      <td>capacity</td>
+      <td>Excluida (no disponible a priori / otro problema)</td>
     </tr>
     <tr>
       <th>20</th>
-      <td>capacity</td>
-      <td>Excluida (fuga / posterior a la decisión)</td>
+      <td>pv_potential</td>
+      <td>Excluida (no disponible a priori / otro problema)</td>
     </tr>
     <tr>
       <th>21</th>
-      <td>optimal_tilt</td>
-      <td>Excluida (fuga / posterior a la decisión)</td>
+      <td>area</td>
+      <td>No usada en la segunda entrega</td>
     </tr>
     <tr>
       <th>22</th>
-      <td>pv_potential</td>
-      <td>Excluida (fuga / posterior a la decisión)</td>
+      <td>size</td>
+      <td>No usada en la segunda entrega</td>
     </tr>
     <tr>
       <th>23</th>
-      <td>operational_status</td>
-      <td>Excluida (fuga / posterior a la decisión)</td>
+      <td>dt_wind</td>
+      <td>No usada en la segunda entrega</td>
     </tr>
     <tr>
       <th>24</th>
+      <td>operational_status</td>
+      <td>No usada en la segunda entrega</td>
+    </tr>
+    <tr>
+      <th>25</th>
       <td>OBJECTID</td>
       <td>Identificador</td>
     </tr>
     <tr>
-      <th>25</th>
+      <th>26</th>
       <td>code</td>
       <td>Identificador</td>
     </tr>
     <tr>
-      <th>26</th>
+      <th>27</th>
       <td>plant_name</td>
       <td>Identificador</td>
     </tr>
     <tr>
-      <th>27</th>
-      <td>country</td>
-      <td>Descriptiva (no predictora)</td>
-    </tr>
-    <tr>
       <th>28</th>
-      <td>size</td>
+      <td>country</td>
       <td>Descriptiva (no predictora)</td>
     </tr>
   </tbody>
@@ -1071,74 +1075,46 @@ document.write(`
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Variable</p></th>
-<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Unidad</p></th>
 <th class="head"><p>Descripción</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code></p></td>
-<td><p>Numérica (°)</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">latitude</span></code>, <code class="docutils literal notranslate"><span class="pre">longitude</span></code></p></td>
+<td><p>°</p></td>
 <td><p>Coordenadas geográficas de la planta</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">elevation</span></code></p></td>
-<td><p>Numérica (m)</p></td>
+<td><p>m</p></td>
 <td><p>Altura sobre el nivel del mar</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">area</span></code></p></td>
-<td><p>Numérica (m²)</p></td>
-<td><p>Superficie ocupada por la planta</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">slope</span></code></p></td>
-<td><p>Numérica (°)</p></td>
-<td><p>Pendiente del terreno</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">curvature</span></code></p></td>
-<td><p>Numérica</p></td>
-<td><p>Forma del terreno (cóncava &lt; 0 &lt; convexa)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">aspect</span></code></p></td>
-<td><p>Numérica (°)</p></td>
-<td><p>Orientación de la pendiente (−1 = plano)</p></td>
-</tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dist_to_road</span></code></p></td>
-<td><p>Numérica (m)</p></td>
+<td><p>m</p></td>
 <td><p>Distancia a la vía principal más cercana</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ambient_temperature</span></code></p></td>
-<td><p>Numérica (°C)</p></td>
+<td><p>°C</p></td>
 <td><p>Temperatura media anual</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ghi</span></code></p></td>
-<td><p>Numérica (kWh/m²)</p></td>
-<td><p>Irradiación global</p></td>
+<td><p>kWh/m²</p></td>
+<td><p>Irradiación global horizontal</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">humidity</span></code></p></td>
-<td><p>Numérica (%)</p></td>
+<td><p>%</p></td>
 <td><p>Humedad relativa media</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">wind_speed</span></code></p></td>
-<td><p>Numérica (m/s)</p></td>
+<td><p>m/s</p></td>
 <td><p>Velocidad media del viento</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">wind_direction</span></code></p></td>
-<td><p>Numérica (°)</p></td>
+<td><p>°</p></td>
 <td><p>Dirección predominante del viento</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">slope_type</span></code></p></td>
-<td><p>Categórica (6)</p></td>
-<td><p>Clase de pendiente</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">curvature_type</span></code></p></td>
-<td><p>Categórica (3)</p></td>
-<td><p>Clase de curvatura</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">aspect_type</span></code></p></td>
-<td><p>Categórica (9)</p></td>
-<td><p>Orientación cardinal</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dt_wind</span></code></p></td>
-<td><p>Categórica (8)</p></td>
-<td><p>Dirección cardinal del viento</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">optimal_tilt</span></code></p></td>
+<td><p>°</p></td>
+<td><p>Inclinación óptima de los paneles</p></td>
 </tr>
 </tbody>
 </table>
